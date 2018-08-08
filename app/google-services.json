@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "925872905980",
+    "firebase_url": "https://gamoraapp-a175a.firebaseio.com",
+    "project_id": "gamoraapp-a175a",
+    "storage_bucket": "gamoraapp-a175a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925872905980:android:07adc6a795a72c2a",
+        "android_client_info": {
+          "package_name": "com.gamora.gamoraapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925872905980-v4c5o4fgtlcmsl2uhsi5v3a05f4040ae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gamora.gamoraapp",
+            "certificate_hash": "bac2c6ebcd85d7d4ce7ba172280788186964314f"
+          }
+        },
+        {
+          "client_id": "925872905980-vl8nec22btpu4cs3drdkhs6gl9cu57sr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqMZ7RTsjXOtZIMqF1_0nJi_bZ-gPjdmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925872905980-vl8nec22btpu4cs3drdkhs6gl9cu57sr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
