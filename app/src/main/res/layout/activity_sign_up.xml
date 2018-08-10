@@ -18,26 +18,27 @@
         android:layout_marginTop="22dp"
         android:hint="@string/real_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
 
     <EditText
-        android:id="@+id/nickname"
-        android:layout_width="283dp"
+        android:id="@+id/nickname_text"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="22dp"
         android:hint="Nickname"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/realname_text" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/password_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
@@ -47,38 +48,41 @@
         android:layout_marginTop="22dp"
         android:hint="Password"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/email_text" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/email_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="48dp"
         android:hint="Email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_text" />
 
     <TextView
         android:id="@+id/signup_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="38dp"
+        android:layout_width="234dp"
+        android:layout_height="71dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="88dp"
+        android:gravity="center"
         android:text="@string/signup_filling"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:typeface="normal"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/next_btn"

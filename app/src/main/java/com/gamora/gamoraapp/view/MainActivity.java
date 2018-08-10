@@ -50,15 +50,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        startActivity(new Intent(MainActivity.this, LogInActivity.class));
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            // User is signed in
+            Intent notConnected = new Intent(MainActivity.this, LogInActivity.class);
+            notConnected.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(notConnected);
+        }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     private void updateUI(FirebaseUser currentUser)
     {
-        Toast.makeText(this, currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, currentUser.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     private void UserMenuSelector(MenuItem item){

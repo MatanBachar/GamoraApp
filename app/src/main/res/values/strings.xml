@@ -1,19 +1,32 @@
 <resources>
+    <!--General-->
     <string name="app_name">GAMORA</string>
     <string name="title_activity_main_screen">MainScreen</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!--LogInActivity-->
     <string name="title_activity_login">Sign in</string>
     <string name="signup_string">"Are you new? Sign up here"</string>
     <string name="login_string">Connect</string>
-    <string name="ps4">Playstation 4</string>
+
+    <!--ConsolesActivity-->
     <string name="console_head">Check all of the platforms you are active in</string>
     <string name="xbox_one">XBOX One</string>
-    <string name="cancel">Cancel</string>
-    <string name="signup_filling">Fill up this details and press Next</string>
-    <string name="real_name">Real-name (Optional)</string>
-    <string name="nintendo_switch">Nintendo Switch</string>
     <string name="pc">PC</string>
+    <string name="nintendo_switch">Nintendo Switch</string>
+    <string name="ps4">Playstation 4</string>
+    <string name="cancel">Cancel</string>
+
+    <!--SignUpActivity (Form filling)-->
+    <string name="signup_filling">Fill up those details and press NEXT</string>
+    <string name="real_name">Real-name (Optional)</string>
+
+    <!--Input check strings-->
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
 
 </resources>

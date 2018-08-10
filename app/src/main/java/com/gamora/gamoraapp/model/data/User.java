@@ -2,11 +2,13 @@ package com.gamora.gamoraapp.model.data;
 
 import android.media.Image;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
 
     private String Uid;
     private String email;
@@ -16,12 +18,12 @@ public class User {
     private int numOfFollowers;
     private Date joinDate;
     private Image profilePic;
-    private Set<Integer> platforms;
-    private Set<User> following;
-    private Set<User> followers;
-    private Set<Post> posts;
+    private List<Integer> platforms;
+    private List<User> following;
+    private List<User> followers;
+    private List<Post> posts;
 
-    public User(String Uid,String email, String password, String nickname, String realName, Set<Integer> userPlatforms)
+    public User(String Uid,String email, String password, String nickname, String realName, List<Integer> userPlatforms)
     {
         this.Uid = Uid;
         this.email = email;
@@ -59,11 +61,11 @@ public class User {
         this.profilePic = profilePic;
     }
 
-    public Set<Integer> getPlatforms() {
+    public List<Integer> getPlatforms() {
         return platforms;
     }
 
-    public void setPlatforms(Set<Integer> platforms) {
+    public void setPlatforms(List<Integer> platforms) {
         this.platforms = platforms;
     }
 
@@ -103,27 +105,27 @@ public class User {
         this.joinDate = joinDate;
     }
 
-    public Set<User> getFollowing() {
+    public List<User> getFollowing() {
         return following;
     }
 
-    public void setFollowing(Set<User> following) {
+    public void setFollowing(List<User> following) {
         this.following = following;
     }
 
-    public Set<User> getFollowers() {
+    public List<User> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(Set<User> followers) {
+    public void setFollowers(List<User> followers) {
         this.followers = followers;
     }
 
-    public Set<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 

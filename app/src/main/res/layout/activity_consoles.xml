@@ -8,13 +8,17 @@
 
     <TextView
         android:id="@+id/consoles_text"
-        android:layout_width="wrap_content"
+        android:layout_width="321dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="22dp"
         android:layout_marginTop="123dp"
+        android:gravity="center"
         android:text="@string/console_head"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,10 +26,11 @@
         android:id="@+id/check_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="31dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
         android:text="@string/pc"
+        android:theme="@style/DarkCheck"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/consoles_text" />
 
@@ -34,16 +39,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="8dp"
         android:text="@string/ps4"
+        android:theme="@style/DarkCheck"
         app:layout_constraintBottom_toTopOf="@+id/check_4"
-        app:layout_constraintStart_toStartOf="@+id/check_4" />
+        app:layout_constraintStart_toEndOf="@+id/check_1"
+        app:layout_constraintTop_toBottomOf="@+id/consoles_text"
+        app:layout_constraintVertical_bias="0.952" />
 
     <CheckBox
         android:id="@+id/check_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="22dp"
         android:text="@string/xbox_one"
+        android:theme="@style/DarkCheck"
         app:layout_constraintEnd_toEndOf="@+id/check_1"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/check_1"
@@ -56,6 +68,7 @@
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:text="@string/nintendo_switch"
+        android:theme="@style/DarkCheck"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/check_3" />
 
