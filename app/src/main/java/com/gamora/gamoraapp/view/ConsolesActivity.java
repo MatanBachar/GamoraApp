@@ -10,11 +10,8 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.gamora.gamoraapp.R;
-import com.gamora.gamoraapp.model.data.PlatformManager;
 import com.gamora.gamoraapp.model.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,9 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-
 
 
 public class ConsolesActivity extends AppCompatActivity {
@@ -73,22 +67,23 @@ public class ConsolesActivity extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()) {
+                        if(task.isSuccessful()) {
+                            String firebaseUserID = mAuth.getUid();
+                            User newUser = new User(firebaseUserID, userEmail,userPass,userNickname,userRealname, userPlatforms);
+                            Toast.makeText(ConsolesActivity.this, "Signing you up...", Toast.LENGTH_LONG).show();
+                            //Adding the user into the Firebase Realtime-database
+                            usersDatabaseRef.child(firebaseUserID).setValue(newUser);
+                            startActivity(new Intent(ConsolesActivity.this, BaseMainActivity.class));
+                            finish();
+                        } else {
                             Toast.makeText(ConsolesActivity.this, "Problem creating user, try again later", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(ConsolesActivity.this, MainActivity.class));
+                            startActivity(new Intent(ConsolesActivity.this, LogInActivity.class));
                             finish();
                         }
                     }
                 });
 
-                Toast.makeText(ConsolesActivity.this, "Signing you up...", Toast.LENGTH_LONG).show();
-                final String firebaseUserID = mAuth.getUid();
-                User newUser = new User(firebaseUserID, userEmail,userPass,userNickname,userRealname, userPlatforms);
-                assert firebaseUserID != null;
-                //Adding the user into the Firebase Realtime-database
-                usersDatabaseRef.child(firebaseUserID).setValue(newUser);
-                startActivity(new Intent(ConsolesActivity.this, MainActivity.class));
-                finish();
+
             }
         });
     }

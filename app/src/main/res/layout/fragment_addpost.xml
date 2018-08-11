@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#b1b1b1">
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="197dp"
+        android:layout_height="185dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="72dp"
+        android:clickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/post_game"
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="184dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Which game did you play here?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_description" />
+
+    <EditText
+        android:id="@+id/post_description"
+        android:layout_width="0dp"
+        android:layout_height="29dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="252dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_marginStart="31dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Describe your post with few words"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/platforms_radio" />
+
+    <Button
+        android:id="@+id/post_upload_btn"
+        android:layout_width="208dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="52dp"
+        android:text="@string/upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/open_gallery_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="14dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="88dp"
+        android:text="Gallery"
+        app:layout_constraintEnd_toStartOf="@+id/open_camera_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_description" />
+
+    <Button
+        android:id="@+id/open_camera_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_description"
+        android:layout_marginEnd="88dp"
+        android:layout_marginRight="88dp"
+        android:text="Camera"
+        app:layout_constraintBaseline_toBaselineOf="@+id/open_gallery_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/open_gallery_btn" />
+
+    <RadioGroup
+        android:id="@+id/platforms_radio"
+        android:layout_width="135dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="104dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/post_description"
+        app:layout_constraintEnd_toStartOf="@+id/post_image"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RadioButton
+            android:id="@+id/pc_radio"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:text="@string/pc" />
+
+        <RadioButton
+            android:id="@+id/ps4_radio"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ps4" />
+
+        <RadioButton
+            android:id="@+id/xbox_one_radio"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:text="@string/xbox_one" />
+
+        <RadioButton
+            android:id="@+id/nintendo_switch_radio"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nintendo_switch" />
+    </RadioGroup>
+
+
+</android.support.constraint.ConstraintLayout>

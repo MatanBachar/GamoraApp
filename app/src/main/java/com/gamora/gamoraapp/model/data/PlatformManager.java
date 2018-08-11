@@ -15,15 +15,15 @@ public class PlatformManager {
         for (int i = 1; i <= platformsStrings.size(); i++) {
             userPlatforms.append(i, new HashSet<User>());
         }
+        initPlatforms();
     }
 
     private static void initPlatforms()
     {
-        SparseArray<String> platforms = new SparseArray<>();
-        platforms.append(1, "PC");
-        platforms.append(2, "Playstation 4");
-        platforms.append(3, "XBOX One");
-        platforms.append(4, "Nintendo Switch");
+        platformsStrings.append(1, "PC");
+        platformsStrings.append(2, "Playstation 4");
+        platformsStrings.append(3, "XBOX One");
+        platformsStrings.append(4, "Nintendo Switch");
     }
 
     public static PlatformManager getInstance() {
@@ -32,5 +32,9 @@ public class PlatformManager {
 
     public String getPlatform(int id){
         return platformsStrings.get(id);
+    }
+
+    public SparseArray<String> getPlatformsStrings() {
+        return platformsStrings;
     }
 }

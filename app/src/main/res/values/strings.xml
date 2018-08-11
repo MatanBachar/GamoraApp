@@ -29,4 +29,8 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 
+    <!--Add post-->
+    <string name="select_image">Select image to upload</string>
+    <string name="upload">UPLOAD</string>
+
 </resources>
