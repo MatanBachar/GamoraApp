@@ -11,25 +11,38 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.gamora.gamoraapp.R;
+import com.gamora.gamoraapp.model.data.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class BaseMainActivity extends AppCompatActivity {
 
     protected BottomNavigationView bottomNavigationView;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private FirebaseDatabase mRootRef;
+
+    //Current user data from database
+    private User userData;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mRootRef = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-        mAuth = FirebaseAuth.getInstance();
+
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -67,6 +80,8 @@ public class BaseMainActivity extends AppCompatActivity {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        Query query = mRootRef.getReference("users").orderByChild("uid").equalTo(currentUser.getUid());
+        query.addListenerForSingleValueEvent(valueEventListener);
         if (currentUser == null) {
             // User is not signed in
             Intent notConnected = new Intent(BaseMainActivity.this, LogInActivity.class);
@@ -76,8 +91,38 @@ public class BaseMainActivity extends AppCompatActivity {
         updateUI(currentUser);
     }
 
+    public FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public FirebaseAuth getmAuth() {
+        return mAuth;
+    }
+
     private void updateUI(FirebaseUser currentUser) {
         Toast.makeText(this, currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+    }
+
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            System.out.println(dataSnapshot.toString());
+            Toast.makeText(BaseMainActivity.this, dataSnapshot.toString(), Toast.LENGTH_LONG).show();
+            if(dataSnapshot.exists()) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    userData = snapshot.getValue(User.class);
+                }
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(BaseMainActivity.this, databaseError.toString(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    public User getUserData() {
+        return userData;
     }
 
 }

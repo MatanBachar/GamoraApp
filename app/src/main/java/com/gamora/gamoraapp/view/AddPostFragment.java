@@ -1,8 +1,10 @@
 package com.gamora.gamoraapp.view;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -24,10 +26,7 @@ import com.gamora.gamoraapp.R;
 import com.gamora.gamoraapp.model.data.PlatformManager;
 import com.gamora.gamoraapp.model.data.Post;
 import com.gamora.gamoraapp.model.data.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.gamora.gamoraapp.view.Utils.CodesContainer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,10 +41,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 public class AddPostFragment extends Fragment {
 
@@ -75,9 +77,25 @@ public class AddPostFragment extends Fragment {
     EditText postDescription;
     EditText postGame;
 
-    private final int GALLERY_INTENT_CALLED = 2;
-    private final int GALLERY_KITKAT_INTENT_CALLED = 3;
     private Uri filePath;
+
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            System.out.println(dataSnapshot.toString());
+            Toast.makeText(getActivity(), dataSnapshot.toString(), Toast.LENGTH_LONG).show();
+            if(dataSnapshot.exists()) {
+                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        userData = snapshot.getValue(User.class);
+                    }
+                }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(getActivity(), databaseError.toString(), Toast.LENGTH_LONG).show();
+        }
+    };
 
     @Nullable
     @Override
@@ -88,37 +106,11 @@ public class AddPostFragment extends Fragment {
         mStorage = FirebaseStorage.getInstance();
         postsStorageRef = mStorage.getReference();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        usersReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://gamoraapp-a175a.firebaseio.com/users");
-        postsDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://gamoraapp-a175a.firebaseio.com/posts");
+        usersReference = FirebaseDatabase.getInstance().getReference("users");
+        postsDatabase = FirebaseDatabase.getInstance().getReference("posts");
 
-        Query query = usersReference.orderByChild("uid").equalTo(currentUser.getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(getActivity(), dataSnapshot.toString(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-////                if(dataSnapshot.exists()) {
-////                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-////                        userData = snapshot.getValue(User.class);
-////                    }
-////                }
-//                Toast.makeText(getActivity(), "Problem????", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Toast.makeText(getActivity(), "Problem!!!!", Toast.LENGTH_LONG).show();
-//            }
-//        });
+        Query query = usersReference.orderByChild("uid").equalTo("5aXfMmO79yTA27EzP8VzXVXUNQh2");
+        query.addListenerForSingleValueEvent(valueEventListener);
 
         //Init view
         postGame = (EditText) baseMain.findViewById(R.id.post_game);
@@ -132,28 +124,27 @@ public class AddPostFragment extends Fragment {
         radioPC = (RadioButton) baseMain.findViewById(R.id.pc_radio);
         radioNintendoSwitch = (RadioButton) baseMain.findViewById(R.id.nintendo_switch_radio);
 
-        for (int i = 1; i <= PlatformManager.getInstance().getPlatformsStrings().size(); i++) {
-            String platform = PlatformManager.getInstance().getPlatform(i);
-            if(!userData.getPlatforms().contains(i)) switch (platform) {
-                case "Playstation 4":
-                    radioPS4.setVisibility(View.GONE);
-                case "XBOX One":
-                    radioPS4.setVisibility(View.GONE);
-                case "Nintendo Switch":
-                    radioPS4.setVisibility(View.GONE);
-                case "PC":
-                    radioPS4.setVisibility(View.GONE);
-            }
-        }
 
+        //Set listeners
         galleryBtn.setOnClickListener(view -> chooseImage());
-        uploadBtn.setOnClickListener(view -> uploadImage());
+        cameraBtn.setOnClickListener(view -> captureImage());
+        uploadBtn.setOnClickListener(view -> {
+            if((!radioXboxOne.isChecked() && !radioPC.isChecked() && !radioNintendoSwitch.isChecked() && !radioPS4.isChecked())
+                    || postGame.getEditableText().toString().equals("") || postGame.getEditableText().toString().equals("")) {
+                ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle("Error");
+                progressDialog.setMessage("Please fill all the details to upload your post!");
+                progressDialog.show();
+            }
+            uploadImage();
+        });
         radioPS4.setOnClickListener(radioListener);
         radioNintendoSwitch.setOnClickListener(radioListener);
         radioXboxOne.setOnClickListener(radioListener);
         radioPC.setOnClickListener(radioListener);
         return baseMain;
     }
+
 
     android.view.View.OnClickListener radioListener = new View.OnClickListener() {
         @Override
@@ -182,6 +173,31 @@ public class AddPostFragment extends Fragment {
         }
     };
 
+    private void captureImage() {
+        if (checkSelfPermission(getContext() ,Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    CodesContainer.MY_CAMERA_PERMISSION_CODE);
+        } else {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CodesContainer.CAMERA_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CodesContainer.MY_CAMERA_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CodesContainer.CAMERA_REQUEST);
+            } else {
+                Toast.makeText(getActivity(), "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     private void uploadImage() {
         if(filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -191,6 +207,14 @@ public class AddPostFragment extends Fragment {
             String postID = UUID.randomUUID().toString();
             String storageUri = "posts/images/" + postID;
             newPost = new Post(postID, choice, postGame.getEditableText().toString(), postDescription.getEditableText().toString(), new Date(), storageUri);
+            if(userData.getPosts() == null) {
+                List<String> firstPost = new ArrayList<>();
+                firstPost.add(postID);
+                userData.setPosts(firstPost);
+            } else {
+                userData.getPosts().add(postID);
+            }
+
 
             postsDatabase.child(currentUser.getUid()).setValue(newPost);
             StorageReference ref = postsStorageRef.child(storageUri);
@@ -212,23 +236,27 @@ public class AddPostFragment extends Fragment {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_image)),GALLERY_INTENT_CALLED);
+            startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_image)), CodesContainer.GALLERY_INTENT_CALLED);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
-            startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+            startActivityForResult(intent, CodesContainer.GALLERY_KITKAT_INTENT_CALLED);
         }
     }
-
+//
     @SuppressLint("NewApi")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK || null == data) return;
-        if (requestCode == GALLERY_INTENT_CALLED) {
+        if (requestCode == CodesContainer.CAMERA_REQUEST) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageToUpload.setImageBitmap(photo);
+        }
+        if (requestCode == CodesContainer.GALLERY_INTENT_CALLED) {
             filePath = data.getData();
-        } else if (requestCode == GALLERY_KITKAT_INTENT_CALLED) {
+        } else if (requestCode == CodesContainer.GALLERY_KITKAT_INTENT_CALLED) {
             filePath = data.getData();
             final int takeFlags = data.getFlags()
                     & (Intent.FLAG_GRANT_READ_URI_PERMISSION

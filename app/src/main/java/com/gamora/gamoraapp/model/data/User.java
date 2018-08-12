@@ -17,13 +17,15 @@ public class User implements Serializable {
     private String realName;
     private int numOfFollowers;
     private Date joinDate;
-    private Image profilePic;
     private List<Integer> platforms;
     private List<User> following;
     private List<User> followers;
-    private List<Post> posts;
+    private List<String> posts;
 
-    public User(String Uid,String email, String password, String nickname, String realName, List<Integer> userPlatforms)
+    public User() {
+    }
+
+    public User(String Uid, String email, String password, String nickname, String realName, List<Integer> userPlatforms)
     {
         this.Uid = Uid;
         this.email = email;
@@ -51,14 +53,6 @@ public class User implements Serializable {
 
     public String getPassword() {
         return password;
-    }
-
-    public Image getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(Image profilePic) {
-        this.profilePic = profilePic;
     }
 
     public List<Integer> getPlatforms() {
@@ -121,11 +115,11 @@ public class User implements Serializable {
         this.followers = followers;
     }
 
-    public List<Post> getPosts() {
+    public List<String> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(List<String> posts) {
         this.posts = posts;
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#b1b1b1">
+    android:background="@color/grey">
 
     <ImageView
         android:id="@+id/post_image"
@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="32dp"
         android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,19 +38,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_description" />
+        app:layout_constraintTop_toBottomOf="@+id/post_description"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/post_description"
         android:layout_width="0dp"
-        android:layout_height="29dp"
+        android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="252dp"
+        android:layout_marginBottom="244dp"
         android:layout_marginEnd="31dp"
         android:layout_marginLeft="31dp"
         android:layout_marginRight="31dp"
         android:layout_marginStart="31dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="center"
         android:hint="Describe your post with few words"
@@ -59,7 +61,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/platforms_radio" />
+        app:layout_constraintTop_toBottomOf="@+id/post_image"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/post_upload_btn"
@@ -103,7 +106,7 @@
     <RadioGroup
         android:id="@+id/platforms_radio"
         android:layout_width="135dp"
-        android:layout_height="0dp"
+        android:layout_height="152dp"
         android:layout_marginBottom="48dp"
         android:layout_marginEnd="12dp"
         android:layout_marginLeft="6dp"
@@ -113,10 +116,10 @@
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@+id/post_description"
         app:layout_constraintEnd_toStartOf="@+id/post_image"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <RadioButton
             android:id="@+id/pc_radio"

@@ -9,6 +9,7 @@ public class Post implements Serializable{
 
     private String postID;
     private int platformID;
+    private int booyaCount;
     private String game;
     private String content;
     private Date postDate;
@@ -21,6 +22,7 @@ public class Post implements Serializable{
         this.content = content;
         this.postDate = postDate;
         this.imageUri = imageUri;
+        this.booyaCount = 0;
     }
 
     public String getPostID() {
@@ -41,6 +43,14 @@ public class Post implements Serializable{
 
     public String getContent() {
         return content;
+    }
+
+    public int getBooyaCount() {
+        return booyaCount;
+    }
+
+    public void setBooyaCount(int booyaCount) {
+        this.booyaCount = booyaCount;
     }
 
     public Date getPostDate() {

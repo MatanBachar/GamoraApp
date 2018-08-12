@@ -39,41 +39,30 @@ public class LogInActivity extends AppCompatActivity {
 
     private void signUpHandler(Button signUpBtn)
     {
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(LogInActivity.this,SignUpActivity.class));
-                finish();
-            }
+        signUpBtn.setOnClickListener(v -> {
+            startActivity(new Intent(LogInActivity.this,SignUpActivity.class));
+            finish();
         });
     }
 
     private void logInHandler(Button logInBtn)
     {
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                EditText emailText = (EditText) findViewById(R.id.email_text);
-                EditText passwordText = (EditText) findViewById(R.id.password_text);
-                String emailInput = emailText.getText().toString();
-                String passInput = passwordText.getText().toString();
-                if(InputCheck.isValidMail(emailInput)) {
-                    mAuth.signInWithEmailAndPassword(emailInput, passInput).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(LogInActivity.this, "Hello", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LogInActivity.this, BaseMainActivity.class));
-                                finish();
-                            }
-                        }
-                    });
-                }
-                else {
-                    emailText.setError(getString(R.string.error_invalid_email));
-                }
+        logInBtn.setOnClickListener(v -> {
+            EditText emailText = (EditText) findViewById(R.id.email_text);
+            EditText passwordText = (EditText) findViewById(R.id.password_text);
+            String emailInput = emailText.getText().toString();
+            String passInput = passwordText.getText().toString();
+            if(InputCheck.isValidMail(emailInput)) {
+                mAuth.signInWithEmailAndPassword(emailInput, passInput).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(LogInActivity.this, "Hello", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LogInActivity.this, BaseMainActivity.class));
+                        finish();
+                    }
+                });
+            }
+            else {
+                emailText.setError(getString(R.string.error_invalid_email));
             }
         });
     }
