@@ -8,6 +8,7 @@ import java.util.Date;
 public class Post implements Serializable{
 
     private String postID;
+    private String userID;
     private int platformID;
     private int booyaCount;
     private String game;
@@ -15,14 +16,27 @@ public class Post implements Serializable{
     private Date postDate;
     private String imageUri;
 
-    public Post(String postID, int platformID, String game, String content, Date postDate, String imageUri) {
+    public Post() {
+
+    }
+
+    public Post(String postID, String userID, int platformID, String game, String content, Date postDate, String imageUri, int booyaCount) {
         this.postID = postID;
+        this.userID = userID;
         this.platformID = platformID;
         this.game = game;
         this.content = content;
         this.postDate = postDate;
         this.imageUri = imageUri;
         this.booyaCount = 0;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getPostID() {

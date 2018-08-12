@@ -35,42 +35,40 @@ public class BaseMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mRootRef = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment selectedFragment = null;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            Fragment selectedFragment = null;
 
-                switch (menuItem.getItemId()) {
-                    case R.id.action_home:
-                        selectedFragment = new HomeFragment();
-                        break;
-                    case R.id.action_add_post:
-                        selectedFragment = new AddPostFragment();
-                        break;
-                    case R.id.action_messages:
-                        selectedFragment = new MessagesFragment();
-                        break;
-                    case R.id.action_hot:
-                        selectedFragment = new HotFragment();
-                        break;
-                    case R.id.action_profile:
-                        selectedFragment = new ProfileFragment();
-                        break;
-                    default:
-                        selectedFragment = new HomeFragment();
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container
-                        , selectedFragment).commit();
-                return true;
+            switch (menuItem.getItemId()) {
+                case R.id.action_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case R.id.action_add_post:
+                    selectedFragment = new AddPostFragment();
+                    break;
+                case R.id.action_messages:
+                    selectedFragment = new MessagesFragment();
+                    break;
+                case R.id.action_hot:
+                    selectedFragment = new HotFragment();
+                    break;
+                case R.id.action_profile:
+                    selectedFragment = new ProfileFragment();
+                    break;
+                default:
+                    selectedFragment = new HomeFragment();
             }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container
+                    , selectedFragment).commit();
+            return true;
         });
         // startActivity(new Intent(BaseMainActivity.this, LogInActivity.class));
     }
@@ -80,15 +78,20 @@ public class BaseMainActivity extends AppCompatActivity {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        Query query = mRootRef.getReference("users").orderByChild("uid").equalTo(currentUser.getUid());
-        query.addListenerForSingleValueEvent(valueEventListener);
-        if (currentUser == null) {
-            // User is not signed in
-            Intent notConnected = new Intent(BaseMainActivity.this, LogInActivity.class);
-            startActivity(notConnected);
+        try {
+            if (currentUser == null) {
+                // User is not signed in
+                Intent notConnected = new Intent(BaseMainActivity.this, LogInActivity.class);
+                startActivity(notConnected);
+                finish();
+            }
+            Query query = mRootRef.getReference("users").orderByChild("uid").equalTo(currentUser.getUid());
+            query.addListenerForSingleValueEvent(valueEventListener);
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            updateUI(currentUser);
+        } catch (Exception e) {
+            Toast.makeText(BaseMainActivity.this, "Problem loading user", Toast.LENGTH_LONG).show();
         }
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
     }
 
     public FirebaseUser getCurrentUser() {

@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment {
         final long ONE_MEGABYTE = 1024 * 1024;
         StorageReference storedPic;
         try {
-            storedPic = profilePics.child("profile_pics/" + activityRef.getUserData().getUID() + ".*");
+            storedPic = profilePics.child("profile_pics/" + activityRef.getUserData().getUID());
             storedPic.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 profilePicView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
             }).addOnFailureListener(exception -> {
@@ -165,7 +165,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String nickname = activityRef.getUserData().getRealName() + "\n\""+ activityRef.getUserData().getNickname() +"\"";
-        nicknameText.setText(nickname);
+        try {
+            String nickname = activityRef.getUserData().getRealName() + "\n\"" + activityRef.getUserData().getNickname() + "\"";
+            nicknameText.setText(nickname);
+        } catch (Exception e){
+
+        }
     }
 }

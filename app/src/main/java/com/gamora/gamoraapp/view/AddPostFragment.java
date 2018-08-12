@@ -13,6 +13,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +58,8 @@ public class AddPostFragment extends Fragment {
     DatabaseReference postsDatabase;
     FirebaseStorage mStorage;
     StorageReference postsStorageRef;
-    FirebaseUser currentUser;
+
+    BaseMainActivity activityRef;
 
     User userData;
     Post newPost;
@@ -79,38 +82,37 @@ public class AddPostFragment extends Fragment {
 
     private Uri filePath;
 
-    private ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            System.out.println(dataSnapshot.toString());
-            Toast.makeText(getActivity(), dataSnapshot.toString(), Toast.LENGTH_LONG).show();
-            if(dataSnapshot.exists()) {
-                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                        userData = snapshot.getValue(User.class);
-                    }
-                }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Toast.makeText(getActivity(), databaseError.toString(), Toast.LENGTH_LONG).show();
-        }
-    };
+//    private ValueEventListener valueEventListener = new ValueEventListener() {
+//        @Override
+//        public void onDataChange(DataSnapshot dataSnapshot) {
+//            System.out.println(dataSnapshot.toString());
+//            if(dataSnapshot.exists()) {
+//                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+//                        userData = snapshot.getValue(User.class);
+//                    }
+//                }
+//        }
+//
+//        @Override
+//        public void onCancelled(DatabaseError databaseError) {
+//            Toast.makeText(getActivity(), databaseError.toString(), Toast.LENGTH_LONG).show();
+//        }
+//    };
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View baseMain = inflater.inflate(R.layout.fragment_addpost, container, false);
+        activityRef = ((BaseMainActivity)getActivity());
 
         //Firebase Init
         mStorage = FirebaseStorage.getInstance();
         postsStorageRef = mStorage.getReference();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         usersReference = FirebaseDatabase.getInstance().getReference("users");
         postsDatabase = FirebaseDatabase.getInstance().getReference("posts");
 
-        Query query = usersReference.orderByChild("uid").equalTo("5aXfMmO79yTA27EzP8VzXVXUNQh2");
-        query.addListenerForSingleValueEvent(valueEventListener);
+//        Query query = usersReference.orderByChild("uid").equalTo("5aXfMmO79yTA27EzP8VzXVXUNQh2");
+//        query.addListenerForSingleValueEvent(activityRef.valueEventListener);
 
         //Init view
         postGame = (EditText) baseMain.findViewById(R.id.post_game);
@@ -137,6 +139,7 @@ public class AddPostFragment extends Fragment {
                 progressDialog.show();
             }
             uploadImage();
+            startActivity(new Intent(getContext(), BaseMainActivity.class));
         });
         radioPS4.setOnClickListener(radioListener);
         radioNintendoSwitch.setOnClickListener(radioListener);
@@ -206,17 +209,17 @@ public class AddPostFragment extends Fragment {
 
             String postID = UUID.randomUUID().toString();
             String storageUri = "posts/images/" + postID;
-            newPost = new Post(postID, choice, postGame.getEditableText().toString(), postDescription.getEditableText().toString(), new Date(), storageUri);
-            if(userData.getPosts() == null) {
+            newPost = new Post(postID, activityRef.getCurrentUser().getUid(), choice, postGame.getEditableText().toString(), postDescription.getEditableText().toString(), new Date(), storageUri, 0);
+            if(activityRef.getUserData().getPosts() == null) {
                 List<String> firstPost = new ArrayList<>();
                 firstPost.add(postID);
-                userData.setPosts(firstPost);
+                activityRef.getUserData().setPosts(firstPost);
             } else {
-                userData.getPosts().add(postID);
+                activityRef.getUserData().getPosts().add(postID);
             }
 
 
-            postsDatabase.child(currentUser.getUid()).setValue(newPost);
+            postsDatabase.child(activityRef.getCurrentUser().getUid()).setValue(newPost);
             StorageReference ref = postsStorageRef.child(storageUri);
             ref.putFile(filePath).addOnSuccessListener(taskSnapshot -> {
                 progressDialog.dismiss();
