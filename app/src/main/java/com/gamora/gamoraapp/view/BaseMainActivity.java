@@ -54,9 +54,6 @@ public class BaseMainActivity extends AppCompatActivity {
                 case R.id.action_add_post:
                     selectedFragment = new AddPostFragment();
                     break;
-                case R.id.action_messages:
-                    selectedFragment = new MessagesFragment();
-                    break;
                 case R.id.action_hot:
                     selectedFragment = new HotFragment();
                     break;
@@ -110,7 +107,6 @@ public class BaseMainActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             System.out.println(dataSnapshot.toString());
-            Toast.makeText(BaseMainActivity.this, dataSnapshot.toString(), Toast.LENGTH_LONG).show();
             if(dataSnapshot.exists()) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     userData = snapshot.getValue(User.class);

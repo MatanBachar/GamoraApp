@@ -82,23 +82,6 @@ public class AddPostFragment extends Fragment {
 
     private Uri filePath;
 
-//    private ValueEventListener valueEventListener = new ValueEventListener() {
-//        @Override
-//        public void onDataChange(DataSnapshot dataSnapshot) {
-//            System.out.println(dataSnapshot.toString());
-//            if(dataSnapshot.exists()) {
-//                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                        userData = snapshot.getValue(User.class);
-//                    }
-//                }
-//        }
-//
-//        @Override
-//        public void onCancelled(DatabaseError databaseError) {
-//            Toast.makeText(getActivity(), databaseError.toString(), Toast.LENGTH_LONG).show();
-//        }
-//    };
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -139,7 +122,6 @@ public class AddPostFragment extends Fragment {
                 progressDialog.show();
             }
             uploadImage();
-            startActivity(new Intent(getContext(), BaseMainActivity.class));
         });
         radioPS4.setOnClickListener(radioListener);
         radioNintendoSwitch.setOnClickListener(radioListener);
@@ -219,7 +201,7 @@ public class AddPostFragment extends Fragment {
             }
 
 
-            postsDatabase.child(activityRef.getCurrentUser().getUid()).setValue(newPost);
+            postsDatabase.child(postID).setValue(newPost);
             StorageReference ref = postsStorageRef.child(storageUri);
             ref.putFile(filePath).addOnSuccessListener(taskSnapshot -> {
                 progressDialog.dismiss();

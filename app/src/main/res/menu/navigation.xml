@@ -8,12 +8,6 @@
         android:title="Profile"/>
 
     <item
-        android:id="@+id/action_messages"
-        android:enabled="true"
-        android:icon="@drawable/ic_messages"
-        android:title="Messages"/>
-
-    <item
         android:id="@+id/action_add_post"
         android:enabled="true"
         android:icon="@drawable/ic_add"

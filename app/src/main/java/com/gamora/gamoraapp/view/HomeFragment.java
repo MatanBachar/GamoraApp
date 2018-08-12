@@ -23,7 +23,6 @@ public class HomeFragment extends PostContainerFragment {
 //        baseMain = inflater.inflate(R.layout.fragment_home, container, false);
 //        listView = (RecyclerView) baseMain.findViewById(R.id.listView);
         super.onCreateView(inflater, container, savedInstanceState);
-
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -37,10 +36,8 @@ public class HomeFragment extends PostContainerFragment {
     }
 
     public void populateView() {
-        postList.add(new Post("123sd689", "12456", 1, "Horizon", "Shalom", new Date(), "456789", 0));
-        postList.add(new Post("ssdawdawd", "12456", 1, "Horizon", "Shalom", new Date(), "456789", 0));
-        postList.add(new Post("12wdawd689", "12456", 1, "Horizon", "Shalom", new Date(), "456789", 0));
-        postList.add(new Post("123wdaw89", "12456", 1, "Horizon", "Shalom", new Date(), "456789", 0));
+        postsDatabase.child("uid").equalTo(activityRef.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(valueEventListener);
     }
 
 

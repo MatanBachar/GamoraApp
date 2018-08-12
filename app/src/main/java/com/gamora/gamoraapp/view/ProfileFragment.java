@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,6 +52,8 @@ public class ProfileFragment extends Fragment {
     Button signOutBtn;
     TextView nicknameText;
     BaseMainActivity activityRef;
+
+    private File postFirebaseImage;
 
     Uri filePath;
 
@@ -82,18 +85,17 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("No", dialogClickListener).show();
         });
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        StorageReference storedPic;
+        StorageReference profilePic = FirebaseStorage.getInstance().getReference().child("profile_pics").child("images");
         try {
-            storedPic = profilePics.child("profile_pics/" + activityRef.getUserData().getUID());
-            storedPic.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-                profilePicView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-            }).addOnFailureListener(exception -> {
-                Toast.makeText(getActivity(), "No profile picture found", Toast.LENGTH_LONG).show();
-            });
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "No profile picture found", Toast.LENGTH_LONG).show();
+            postFirebaseImage = File.createTempFile("images", null, getContext().getCacheDir());
+        }catch (Exception e){
+
         }
+        profilePic.getFile(postFirebaseImage).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                profilePicView.setImageURI(Uri.fromFile(postFirebaseImage));
+            }
+        });
         return baseMain;
     }
 
